@@ -1,16 +1,16 @@
-const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Product = require('./product');
 const User = require('./user');
+const Sequelize = require("sequelize");
 
 const Review = sequelize.define('Review', {
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true  
   },
   product_id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     references: {
       model: Product,
       key: 'id',
@@ -18,7 +18,7 @@ const Review = sequelize.define('Review', {
     allowNull: false,
   },
   user_id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     references: {
       model: User,
       key: 'id',
@@ -26,7 +26,7 @@ const Review = sequelize.define('Review', {
     allowNull: false,
   },
   rating: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     allowNull: false,
     validate: {
       min: 1,
@@ -34,7 +34,7 @@ const Review = sequelize.define('Review', {
     }
   },
   comment: {
-    type: DataTypes.TEXT,
+    type: Sequelize.DataTypes.TEXT,
     allowNull: true,
   },
 }, {

@@ -1,12 +1,19 @@
-const { Sequelize, DataTypes, Model, INTEGER, FLOAT } = require('sequelize');
 const sequelize = require('../config/database');
-const { DECIMAL, ENUM } = require('mysql/lib/protocol/constants/types');
 const BaseModel = require('./cloth_base');
+const Sequelize = require("sequelize");
+
+class Bag extends BaseModel {} 
 
 
-class Bag extends BaseModel{}
 Bag.init({
-    type_bag:{
-        type :DataTypes.ENUM('Tote Bag','Crossbody Bag','Clutch Bag','Shoulder Bag'),}
+  type_bag: {
+    type: Sequelize.DataTypes.ENUM('ToteBag', 'CrossbodyBag', 'ClutchBag', 'ShoulderBag'),
+    allowNull: false,
+  }
+}, {
+  sequelize:sequelize,  
+  modelName: 'Bag',  
+  tableName: 'bags',  
+})
 
-});
+module.exports = Bag;  

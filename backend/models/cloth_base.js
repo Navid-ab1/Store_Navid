@@ -1,39 +1,43 @@
-const { Sequelize, DataTypes, Model, INTEGER, FLOAT } = require('sequelize');
+const  Model = require('sequelize');
 const sequelize = require('../config/database');
-const { DECIMAL, ENUM } = require('mysql/lib/protocol/constants/types');
-const { text } = require('express');
+const Sequelize = require("sequelize");
 
 class BaseModel extends Model{}
 
 BaseModel.init({
     id:{
-    type:DataTypes.INTEGER,
+    type:Sequelize.DataTypes.INTEGER,
     autoIncrement:true,
     primaryKey:true  
     },
 
     size:{
-        type:DataTypes.DECIMAL(2),
+        type:Sequelize.DataTypes.DECIMAL(2),
         allowNull:true,
     },
 
     color:{
-        type:DataTypes.ENUM('Brown','Black','Green','Yellow','Grey','Blue','Red','Purple','Yellow','White'),
+        type:Sequelize.DataTypes.ENUM('Brown','Black','Green','Yellow','Grey','Blue','Red','Purple','Yellow','White'),
         allowNull:false,
     },
     price:{
-        type:DataTypes.FLOAT,
+        type:Sequelize.DataTypes.FLOAT,
         allowNull:false,
         
     },
     description:{
-        type:DataTypes.text,
+        type:Sequelize.DataTypes.TEXT,
     },
     Exist:{
-        type:DataTypes.Boolean,
+        type:Sequelize.DataTypes.BOOLEAN,
     },
     item_number:{
-        type:DataTypes.INTEGER,
+        type:Sequelize.DataTypes.INTEGER,
     },
 
-});
+},{  sequelize, 
+    modelName: 'BaseModel',
+    timestamps: true,
+    tableName: 'base_models',});
+
+module.exports = BaseModel;

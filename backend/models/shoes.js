@@ -1,26 +1,26 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); 
+const sequelize = require('../config/database');
+const Sequelize = require("sequelize");
 
 const Shoes = sequelize.define('Shoes', {
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
   brand: {
-    type: DataTypes.STRING,
+    type: Sequelize.DataTypes.STRING,
     allowNull: false,
   },
   size: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     allowNull: false,
   },
   color: {
-    type: DataTypes.STRING,
+    type: Sequelize.DataTypes.STRING,
     allowNull: false,
   },
   price: {
-    type: DataTypes.DECIMAL(10, 2),
+    type: Sequelize.DataTypes.DECIMAL(10, 2),
     allowNull: false,
   }
 }, {

@@ -1,4 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const Sequelize = require('sequelize');
+// const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize('store', 'root', 'Db381n#@', {
   host: '127.0.0.1',
   dialect: 'mysql'
@@ -6,20 +7,20 @@ const sequelize = new Sequelize('store', 'root', 'Db381n#@', {
 
 const Product = sequelize.define('Product', {
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
   name: {
-    type: DataTypes.STRING,
+    type: Sequelize.DataTypes.STRING,
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT,
+    type: Sequelize.DataTypes.TEXT,
     allowNull: true,
   },
 }, {
-  tableName: 'products', // Plural table name is conventional
+  tableName: 'products', 
   timestamps: true,
 });
 
