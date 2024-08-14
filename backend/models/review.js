@@ -7,7 +7,7 @@ const Review = sequelize.define('Review', {
   id: {
     type: Sequelize.DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true  
+    primaryKey: true
   },
   product_id: {
     type: Sequelize.DataTypes.INTEGER,
@@ -42,6 +42,7 @@ const Review = sequelize.define('Review', {
   timestamps: true,
 });
 
+// Set up associations
 Product.hasMany(Review, { foreignKey: 'product_id' });
 Review.belongsTo(Product, { foreignKey: 'product_id' });
 

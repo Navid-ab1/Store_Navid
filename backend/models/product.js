@@ -1,9 +1,5 @@
 const Sequelize = require('sequelize');
-// const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('store', 'root', 'Db381n#@', {
-  host: '127.0.0.1',
-  dialect: 'mysql'
-});
+const sequelize = require('../config/database'); // Use your existing database config
 
 const Product = sequelize.define('Product', {
   id: {
@@ -20,8 +16,8 @@ const Product = sequelize.define('Product', {
     allowNull: true,
   },
 }, {
-  tableName: 'products', 
-  timestamps: true,
+  tableName: 'products',
+  timestamps: true,  // Automatically adds createdAt and updatedAt fields
 });
 
 module.exports = Product;

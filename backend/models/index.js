@@ -1,64 +1,41 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const current_config = require('../config/config.json');
-const env = process.env.NODE_ENV || 'production';
-
-const basename = path.basename(__filename);
-const config = current_config[env];
-const db = {};
-
-const dbUrl = process.env.DATABASE_URL || 'mysql://root:Db381n#%40@127.0.0.1:3306/store';
-console.log("Database URL:", dbUrl);
-const sequelize = new Sequelize('store', 'root', 'Db381n#@', {
-    host: '127.0.0.1',
-    dialect: 'mysql' // or 'mysql' or any other dialect you are using
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('mysql://root:Db381n%23%40@127.0.0.1:3306/store', {
+    dialect: 'mysql'
 });
 
+const models = {};
 
+// Import model classes without invoking them
+models.BaseModel = require('./cloth_base');
+models.Tshirt = require('./t_shirt');
+models.Product = require('./product');
+models.User = require('./user');
+models.Review = require('./review');
+models.Shoes = require('./shoes');
+models.Pants = require('./pants');
+models.Bodysuit = require('./bodysuit');
+models.Bag = require('./bag');
+models.Croptop = require('./croptop');
 
+// Setup associations if any
+Object.keys(models).forEach(modelName => {
+    if (models[modelName].associate) {
+        models[modelName].associate(models);
+    }
+});
 
-// If DATABASE_URL is not set, it will fall back to the default value.
-//
-// let sequelize;
-// if (config.use_env_variable) {
-//   // Check if the environment variable exists and is defined
-//   console.log( config.use_env_variable)
-//   const connectionString = process.env["config.use_env_variable"];
-//   if (!connectionString) {
-//     console.log(connectionString)
-//     throw new Error(`Environment variable ${config.use_env_variable} is not set.`);
-//   }
-//   sequelize = new Sequelize(connectionString, config);
-// } else {
-//   sequelize = new Sequelize(config.database, config.username, config.password, config);
-// }
-//
-// // Load models
-// fs
-//     .readdirSync(__dirname)
-//     .filter(file => {
-//       return (
-//           file.indexOf('.') !== 0 &&
-//           file !== basename &&
-//           file.slice(-3) === '.js' &&
-//           file.indexOf('.test.js') === -1
-//       );
-//     })
-//     .forEach(file => {
-//       const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-//       db[model.name] = model;
-//     });
-//
-// Object.keys(db).forEach(modelName => {
-//   if (db[modelName].associate) {
-//     db[modelName].associate(db);
-//   }
-// });
-//
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
-//
-// module.exports = db;
+// Sync all models with the database
+sequelize.sync()
+    .then(() => {
+        console.log('Tables have been synced successfully.');
+    })
+    .catch(error => {
+        console.error('Error syncing tables:', error);
+    });
+
+models.sequelize = sequelize;
+models.Sequelize = Sequelize;
+
+module.exports = models;

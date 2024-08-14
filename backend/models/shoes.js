@@ -24,9 +24,8 @@ const Shoes = sequelize.define('Shoes', {
     allowNull: false,
   }
 }, {
-  tableName: 'shoes',  
-  timestamps: true,
-
+  tableName: 'shoes',
+  timestamps: true,  // Adds createdAt and updatedAt fields automatically
 });
 
 module.exports = Shoes;
