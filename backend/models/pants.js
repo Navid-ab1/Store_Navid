@@ -1,4 +1,4 @@
-const BaseModel = require('./cloth_base');
+const BaseModel = require('./clothBase');
 const sequelize = require("../config/database");
 const Sequelize = require("sequelize");
 
@@ -20,7 +20,7 @@ Pants.init({
   clothId: {  // Foreign key to cloth_base
     type: Sequelize.DataTypes.INTEGER,
     references: {
-      model: 'base_models',  // References the table name defined in ClothBase
+      model: 'cloth_base',  // References the table name defined in ClothBase
       key: 'id'
     },
     allowNull: false

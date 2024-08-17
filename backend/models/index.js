@@ -8,8 +8,8 @@ const sequelize = new Sequelize('mysql://root:Db381n%23%40@127.0.0.1:3306/store'
 const models = {};
 
 // Import model classes without invoking them
-models.BaseModel = require('./cloth_base');
-models.Tshirt = require('./t_shirt');
+models.BaseModel = require('./clothBase');
+models.Tshirt = require('./tShirt');
 models.Product = require('./product');
 models.User = require('./user');
 models.Review = require('./review');

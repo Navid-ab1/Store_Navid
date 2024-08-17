@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const ClothBase = require('./cloth_base');
+const ClothBase = require('./clothBase');
 
 class Croptop extends ClothBase {}
 
@@ -27,9 +27,9 @@ Croptop.init({
     modelName: 'Croptop',
     tableName: 'croptops',
 });
-
-Croptop.associate = (models) => {
-    Croptop.belongsTo(models.ClothBase, { foreignKey: 'clothId', as: 'cloth' });
-};
+Croptop.belongsTo(ClothBase, { foreignKey: 'clothId', as: 'cloth' });
+// Croptop.associate = (models) => {
+//     Croptop.belongsTo(models.ClothBase, { foreignKey: 'clothId', as: 'cloth' });
+// };
 
 module.exports = Croptop;

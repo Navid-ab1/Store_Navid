@@ -1,5 +1,5 @@
 const sequelize = require('../config/database');
-const BaseModel = require('./cloth_base');
+const BaseModel = require('./clothBase');
 const Sequelize = require("sequelize");
 
 class Bodysuit extends BaseModel {}
@@ -17,7 +17,7 @@ Bodysuit.init({
     clothId: {  // Foreign key to cloth_base
         type: Sequelize.DataTypes.INTEGER,
         references: {
-            model: 'base_models',  // Matches the table name defined in ClothBase
+            model: 'cloth_base',  // Matches the table name defined in ClothBase
             key: 'id'
         },
         allowNull: false
