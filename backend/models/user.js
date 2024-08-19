@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database'); // Use your existing database config
+const bcrypt = require('bcrypt');
 
 const User = sequelize.define('User', {
     id: {
@@ -34,17 +35,21 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: 'user',
     },
+
+
 }, {
     tableName: 'users',  // Define the table name explicitly
     timestamps: true,  // Add createdAt and updatedAt fields automatically
     hooks: {
         beforeCreate: async (user, options) => {
             // Hash the password before storing it in the database
-            const bcrypt = require('bcrypt');
+
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(user.password, salt);
         }
     }
+
+
 });
 
 // Sync the database (usually called in the main app file, not in the model)
