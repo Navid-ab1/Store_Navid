@@ -1,7 +1,7 @@
 const {User} = require('../models')
 const {where} = require("sequelize");
 module.exports = {
-    async login(req, res) {
+    async login_p(req, res) {
         try {
             const {phoneNumber, password} = req.body
             const user = await User.findOne({where: {id: phoneNumber}})

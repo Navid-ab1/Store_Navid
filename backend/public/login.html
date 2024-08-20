@@ -9,14 +9,14 @@
 <body>
 <div class="login-container">
     <h2>login</h2>
-    <form id="loginForm">
+    <form id="loginForm" action="/login" method="post">
         <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Username(Your phoneNumber is username)</label>
             <input type='text' id='username' name="username" required>
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type='password' id='password2' name="password" required>
+            <label for="passwordt">Password</label>
+            <input type='password' id='passwordt' name="passwordt" required>
         </div>
 
         <button type="submit">login</button>
@@ -27,7 +27,7 @@
 </div>
 <div class='register-container'>
     <h3>Register</h3>
-    <form id='registerForm'>
+    <form id='registerForm' action="/register" method="post">
         <div class='form'>
             <label for="name">Name</label>
             <input type='text' id='name' name='name'>
@@ -42,13 +42,13 @@
         </div>
         <div class='form'>
             <label for='phoneNumber'>Phone Number</label>
-            <input type='number' id="PhoneNumber" name="PhoneNumber">
+            <input type='number' id="phoneNumber" name="phoneNumber">
         </div>
         <div class='form'>
             <label for='Password'>Password</label>
             <input type='password' id="Password" name="Password">
         </div>
-        <button type="submit">login</button>
+        <button type="submit">Register</button>
         <div id='errorMessage'></div>
     </form>
 </div>
