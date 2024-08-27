@@ -19,6 +19,7 @@ models.Bodysuit = require('./bodysuit');
 models.Bag = require('./bag');
 models.Croptop = require('./croptop');
 models.Chemise = require('./chemises');
+models.Chemise = require('./skirts');
 
 // Setup associations if any
 Object.keys(models).forEach(modelName => {

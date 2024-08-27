@@ -3,15 +3,30 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
     // Get form data
     var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-
+    var password = document.getElementById('passwordt').value;
+    console.log(password)
     // Basic validation (you can enhance this as needed)
     if (username === '' || password === '') {
         document.getElementById('error-message').textContent = 'Both fields are required.';
     } else {
-        // Perform login logic (e.g., send data to a server)
-        // For demonstration, we just show a success message
-        document.getElementById('error-message').textContent = '';
-        alert('Login successful!');
+        fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers:{
+                'content-type': 'application/x-www-form-urlencoded',
+            },
+            body : `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.txt();
+                }
+                else {
+                    throw new Error('login failed');
+
+                }
+            })
+            .catch(error => {
+                document.getElementById('error-message').textContent = 'login failed with ' + error.message;
+            })
     }
 });
