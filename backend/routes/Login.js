@@ -19,6 +19,7 @@ router.use(express.json());
 router.post('/', async (req, res) => {
     try {
         const {username, password} = req.body;
+        console.log(typeof username ,username)
         const user = await User.findOne({where:{phone_number: username.trim()}});
         if (user && user.password === password) {
             res.status(200).render('contact'); // Make sure you have 'contact' template

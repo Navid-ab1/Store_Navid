@@ -1,32 +1,32 @@
 document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form from submitting the default way
+    event.preventDefault();
 
-    // Get form data
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('passwordt').value;
-    console.log(password)
-    // Basic validation (you can enhance this as needed)
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Basic validation
     if (username === '' || password === '') {
         document.getElementById('error-message').textContent = 'Both fields are required.';
     } else {
-        fetch('http://localhost:3000/login', {
+        fetch('/login', {
             method: 'POST',
-            headers:{
-                'content-type': 'application/x-www-form-urlencoded',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body : `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
         })
             .then(response => {
                 if (response.ok) {
-                    return response.txt();
+                    return response.text();
+                } else {
+                    throw new Error('Login failed');
                 }
-                else {
-                    throw new Error('login failed');
-
-                }
+            })
+            .then(data => {
+                document.body.innerHTML = data; // This will replace the body with the response content
             })
             .catch(error => {
-                document.getElementById('error-message').textContent = 'login failed with ' + error.message;
-            })
+                document.getElementById('error-message').textContent = 'Login failed with ' + error.message;
+            });
     }
 });
