@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const User = require("../models/user");
 
-router.get('/', (req, res) => {
+router.get('/login', (req, res) => {
     const filePath = path.join(__dirname, '../public/login.html');
     console.log(filePath);
     res.sendFile(filePath, (err) => {
@@ -16,11 +16,11 @@ router.get('/', (req, res) => {
 
 router.use(express.json());
 // Handle login form submission
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const {username, password} = req.body;
-        console.log(typeof username ,username)
-        const user = await User.findOne({where:{phone_number: username.trim()}});
+        console.log(typeof username, username)
+        const user = await User.findOne({where: {phone_number: username.trim()}});
         if (user && user.password === password) {
             res.status(200).render('contact'); // Make sure you have 'contact' template
         } else {
