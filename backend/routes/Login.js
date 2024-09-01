@@ -15,20 +15,19 @@ router.get('/login', (req, res) => {
 });
 
 router.use(express.json());
-// Handle login form submission
+
 router.post('/login', async (req, res) => {
     try {
         const {username, password} = req.body;
-        console.log(typeof username, username)
-        const user = await User.findOne({where: {phone_number: username.trim()}});
+        const user = await User.findOne({where: {phone_number: username}});
         if (user && user.password === password) {
-            res.status(200).render('contact'); // Make sure you have 'contact' template
+            res.status(200).render('contact');
         } else {
-            res.status(401).render('index'); // Make sure you have 'index' template
+            res.status(401).render('login');
         }
     } catch (error) {
         console.error('Error during login:', error);
-        res.status(500).send('An error occurred trying to log in');
+        res.status(500).render("login").send('An error occurred trying to log in');
     }
 });
 module.exports = router;

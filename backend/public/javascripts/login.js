@@ -23,7 +23,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                 }
             })
             .then(data => {
-                document.body.innerHTML = data; // This will replace the body with the response content
+                document.body.innerHTML =  data; // This will replace the body with the response content
             })
             .catch(error => {
                 document.getElementById('error-message').textContent = 'Login failed with ' + error.message;
