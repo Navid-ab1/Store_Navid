@@ -1,28 +1,61 @@
 const express = require("express");
-const app = express()
-const router = express.Router();
 const path = require('path');
-const login = require("./Login");
+const app = express();
 const {port} = require("../config/config");
+const router = express.Router();
 
+const User = require("../models/user");
 
+app.use(express.static(path.join(__dirname, '../public')));
 
-router.get('/', function (req, res, next) {
+app.use(express.json());
+
+app.get('/', function (req, res, next) {
     res.render('index');
 });
 
-app.use('/', login);
+app.get('/login', function (req, res) {
+    const filePath = path.join(__dirname, '../public/login.html');
+    console.log(filePath);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('File not found:', err.message);
+            res.status(404).send('File not found');
+        }
+    });
+});
 
-router.use(express.static(path.join(__dirname, '../public')));
+app.post('/login', async (req, res) => {
+    try {
+        const {username, password} = req.body;
+        console.log(username, password);     // I have an error in this (undefined ,undefined)
+        const user = await User.findAll();
+        console.log(user);
+        // const user = await User.findOne({where: {phone_number: username}});
+        // if (user && user.password === password) {
+        //     res.status(200).render('contact');
+        // } else {
+        //     res.status(401).render('login');
+        // }
+    } catch (error) {
+        console.error('Error during login:', error);
+        // res.status(500).send('An error occurred trying to log in')
+        res.render("login");
+    }
+});
 
+// Use the router for the root path
+app.use('/', router);
+
+// Start the server
 app.listen(port, () => {
-    console.log('server is running ')
+    console.log(`Server is running on port ${port}`);
 });
 
 module.exports = router;
 
 
-//
+
 // router.get('/Tops', function (req, res, next) {
 //     res.render('tops');
 // })

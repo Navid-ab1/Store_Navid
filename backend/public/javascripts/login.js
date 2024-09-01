@@ -1,3 +1,5 @@
+import {json} from "express";
+
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -11,9 +13,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         fetch('/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+            body: JSON.stringify({username: username, password: password}),
         })
             .then(response => {
                 if (response.ok) {
