@@ -9,7 +9,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     // Basic validation
     if (username === '' || password === '') {
         document.getElementById('error-message').textContent = 'Both fields are required.';
-    // } else {
+    }
+    // else {
     //     fetch('/login', {
     //         method: 'POST',
     //         headers: {
@@ -30,5 +31,5 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     //         .catch(error => {
     //             document.getElementById('error-message').textContent = 'Login failed with ' + error.message;
     //         });
-    }
+
 });
