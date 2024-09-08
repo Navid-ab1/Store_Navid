@@ -29,10 +29,8 @@ app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Ensure that username and password are being logged correctly
-        console.log(username, password);   // This should now log the correct values
 
-        // Fetch users from database
+        console.log(username, password);
         const user = await User.findAll();
         res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
 
@@ -60,6 +58,8 @@ app.listen(port, () => {
 });
 
 module.exports = router;
+
+
 
 
 

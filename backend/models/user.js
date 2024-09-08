@@ -35,6 +35,13 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: 'user',
     },
+    Email: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        validate: {
+            isEmail: true
+        }
+    },
 
 
 }, {
@@ -52,8 +59,8 @@ const User = sequelize.define('User', {
 
 });
 
-// Sync the database (usually called in the main app file, not in the model)
-sequelize.sync()
+
+sequelize.sync({alter: true})
     .then(() => {
         console.log('Tables have been synced successfully.');
     })
