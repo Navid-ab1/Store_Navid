@@ -27,22 +27,29 @@ app.get('/login', function (req, res) {
 
 app.post('/login', async (req, res) => {
     try {
-        const {username, password} = req.body;
-        console.log(username, password);     // I have an error in this (undefined ,undefined)
+        const { username, password } = req.body;
+
+        // Ensure that username and password are being logged correctly
+        console.log(username, password);   // This should now log the correct values
+
+        // Fetch users from database
         const user = await User.findAll();
-        console.log(user);
-        // const user = await User.findOne({where: {phone_number: username}});
+        res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
+
+        // Uncomment the following lines to add login functionality
+        // const user = await User.findOne({ where: { phone_number: username } });
         // if (user && user.password === password) {
-        //     res.status(200).render('contact');
+        //   res.status(200).render('contact');
         // } else {
-        //     res.status(401).render('login');
+        //   res.status(401).render('login');
         // }
+
     } catch (error) {
-        console.error('Error during login:', error);
-        // res.status(500).send('An error occurred trying to log in')
-        res.render("login");
+        console.error(`${error} occurred`);
+        res.status(500).send('An error occurred trying to log in');
     }
 });
+
 
 // Use the router for the root path
 app.use('/', router);
