@@ -28,7 +28,6 @@ const User = sequelize.define('User', {
     password: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
-        // It's good practice to hash the password before storing it
     },
     role: {
         type: Sequelize.DataTypes.ENUM('user', 'admin'),
@@ -49,7 +48,6 @@ const User = sequelize.define('User', {
     timestamps: true,  // Add createdAt and updatedAt fields automatically
     hooks: {
         beforeCreate: async (user, options) => {
-            // Hash the password before storing it in the database
 
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(user.password, salt);

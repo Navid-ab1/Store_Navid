@@ -12,8 +12,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 // -------------------------I should Add ejs file -----------------------
 
 
-
-
 app.get('/login', function (req, res) {
     const filePath = path.join(__dirname, '../public/login.html');
     console.log(filePath);
@@ -58,9 +56,24 @@ app.get('/register', function (req, res) {
 
 app.post('/register', async (req, res) => {
     try {
-        const {name, password} = req.body;
-        console.log(name, password);
+        const {name, familyName, address, phoneNumber, email, Password} = req.body;
+        console.log(name, familyName, address, phoneNumber, email, Password);
+        const existingUser = await User.findOne({where: {phone_number: phoneNumber}});
+        if (existingUser) {
+            return res.status(400).send('User already exists');
+        }
+        const newUser = await User.create({
+            first_name: name,
+            last_name: familyName,
+            address: address,
+            phone_number: phoneNumber,
+            password: Password,
+            role: 'user',
+            Email: email,
+        });
         res.redirect("product.html");
+
+// I think the problems return to the Create ad and updated at in user table
 
     } catch (error) {
         console.error(`${error} occurred`);
