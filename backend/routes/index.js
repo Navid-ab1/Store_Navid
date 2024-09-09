@@ -6,15 +6,13 @@ const User = require("../models/user");
 
 // app.set('view engine', 'ejs');
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // -------------------------I should Add ejs file -----------------------
 
 
-app.get('/', function (req, res, next) {
-    res.render('index');
-});
+
 
 app.get('/login', function (req, res) {
     const filePath = path.join(__dirname, '../public/login.html');
@@ -34,11 +32,12 @@ app.post('/login', async (req, res) => {
         // res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
 
 
-        const user = await User.findOne({ where: { phone_number: username } });
+        const user = await User.findOne({where: {phone_number: username}});
+        console.log(user)
         if (user && user.password === password) {
-          res.status(200).render('contact');
+            res.status(200).sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html');
         } else {
-          res.status(401).render('login');
+            res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
         }
 
     } catch (error) {
@@ -61,7 +60,7 @@ app.post('/register', async (req, res) => {
     try {
         const {name, password} = req.body;
         console.log(name, password);
-        res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
+        res.redirect("product.html");
 
     } catch (error) {
         console.error(`${error} occurred`);
@@ -69,7 +68,9 @@ app.post('/register', async (req, res) => {
     }
 })
 
-
+app.get('/', function (req, res, next) {
+    res.sendFile('/home/navid/Desktop/Store_Navid/backend/public/index.html');
+});
 // // Use the router for the root path
 app.use('/', router);
 
