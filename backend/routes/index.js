@@ -40,7 +40,7 @@ app.post('/login', async (req, res) => {
         if (isPasswordValid) {
             res.status(200).sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html');
         } else {
-            res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
+            res.status(401).json({message:'Your password is incorrect please try again'});
         }
 
     } catch (error) {
