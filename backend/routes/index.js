@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const router = express.Router();
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
 // app.set('view engine', 'ejs');
 app.use(express.json());
@@ -28,11 +29,15 @@ app.post('/login', async (req, res) => {
         const {username, password} = req.body;
         console.log(username, password);
         // res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
-
-
         const user = await User.findOne({where: {phone_number: username}});
-        console.log(user)
-        if (user && user.password === password) {
+
+        console.log(user,'first')
+        console.log(user.password,'second')
+        const isPasswordValid = await bcrypt.compare(password,user.password)
+        if (!user){
+            return res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
+        }
+        if (isPasswordValid) {
             res.status(200).sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html');
         } else {
             res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
