@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content="width=device-width, initial-scale=1.0">
-    <title>login page</title>
+    <title>Login page</title>
     <link rel="stylesheet" href="./stylesheet/login.css">
 </head>
 
 <body>
+<nav>
+    <ul>
+        <li id="userIconContainer">
+            <span id="userIcon">Login</span>
+        </li>
+    </ul>
+</nav>
 <div class="login-container">
-    <h2>login</h2>
-    <form id="loginForm" action="/login" method="post">
+    <h2>Login</h2>
+    <form id="loginForm">
         <div class="form-group">
             <label for="username">Username(Your phoneNumber is username)</label>
             <input type='text' id='username' name="username" required>
@@ -23,6 +30,7 @@
         <button type="submit">login</button>
         <div id='error-message'></div>
     </form>
+    <button id="logoutButton" style="display: none">Log out</button>
 </div>
 </body>
 <!--<footer>designed by Navid</footer>-->

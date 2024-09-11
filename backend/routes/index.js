@@ -4,6 +4,9 @@ const app = express();
 const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = '9e8bd0f73ed187a5f321700b7f15ded9e6ba25f7b099f55303b46b774ffe4f60648a373bbae8f292746e406560ccf43a19497bea7997ba8863b5df4391264642'
+
 
 // app.set('view engine', 'ejs');
 app.use(express.json());
@@ -11,7 +14,21 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // -------------------------I should Add ejs file -----------------------
+function authenticateToken(req, res, next) {
+    const authHeader = req.authorization['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
+    if(token === null){
+        return res.status(401).json({message:'Token is missing.'});
+    }
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err){
+            return res.status(403).json({message:'Invalid token'});
+        }
+        req.user = user;
+        next();
+    });
+}
 
 app.get('/login', function (req, res) {
     const filePath = path.join(__dirname, '../public/login.html');
@@ -31,18 +48,20 @@ app.post('/login', async (req, res) => {
         // res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
         const user = await User.findOne({where: {phone_number: username}});
 
-        console.log(user,'first')
-        console.log(user.password,'second')
-        const isPasswordValid = await bcrypt.compare(password,user.password)
-        if (!user){
+        console.log(user, 'first')
+        console.log(user.password, 'second')
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!user) {
             return res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
         }
+
         if (isPasswordValid) {
             res.status(200).sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html');
         } else {
-            res.status(401).json({message:'Your password is incorrect please try again'});
+            res.status(401).json({message: 'Your password is incorrect please try again'});
         }
-
+        const token = jwt.sign({id: user.id, username: user.phoneNumber}, JWT_SECRET, {expiresIn: '1h'});
+        res.status(200).json({token});
     } catch (error) {
         console.error(`${error} occurred`);
         res.status(500).send('An error occurred trying to log in');
