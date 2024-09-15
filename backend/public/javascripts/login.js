@@ -5,16 +5,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('error-message');
 
-    // Function to update the UI based on login status
+
     function updateUI(isLoggedIn) {
         if (isLoggedIn) {
             userIcon.textContent = '👤 My Account'; 
             logoutButton.style.display = 'inline';  
-            loginForm.style.display = 'none';       
+            loginForm.style.display = 'none';   
+            Dashboard.style.display = 'inline'
         } else {
             userIcon.textContent = 'Login';         
             logoutButton.style.display = 'none';    
-            loginForm.style.display = 'block';      
+            loginForm.style.display = 'block'; 
+            Dashboard.style.display = 'none'
+
+
         }
     }
 
@@ -23,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle login form submission
     loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent default form submission
+        event.preventDefault();  
 
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
