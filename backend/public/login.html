@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="">
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,10 @@
             <span id="userIcon">Login</span>
         </li>
     </ul>
-</nav>
+<!-- </nav> -->
 <div class="login-container">
     <h2>Login</h2>
-    <form id="loginForm">
+    <form id="loginForm" method = 'post',action = '\login'>   <!-- if it is necessary , add action and method to it.-->
         <div class="form-group">
             <label for="username">Username(Your phoneNumber is username)</label>
             <input type='text' id='username' name="username" required>
@@ -32,6 +32,7 @@
     </form>
     <button id="logoutButton" style="display: none">Log out</button>
 </div>
+<script src="javascripts/login.js"></script>
 </body>
 <!--<footer>designed by Navid</footer>-->
 </html>

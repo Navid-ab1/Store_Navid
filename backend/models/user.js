@@ -46,13 +46,13 @@ const User = sequelize.define('User', {
 }, {
     tableName: 'users',  // Define the table name explicitly
     timestamps: true,  // Add createdAt and updatedAt fields automatically
-    hooks: {
-        beforeCreate: async (user, options) => {
+    // hooks: {
+    //     beforeCreate: async (user, options) => {
 
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(user.password, salt);
-        }
-    }
+    //         const salt = await bcrypt.genSalt(10);
+    //         user.password = await bcrypt.hash(user.password, salt);
+    //     }
+    // }
 
 
 });

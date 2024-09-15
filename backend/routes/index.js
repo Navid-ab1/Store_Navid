@@ -5,7 +5,8 @@ const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = '9e8bd0f73ed187a5f321700b7f15ded9e6ba25f7b099f55303b46b774ffe4f60648a373bbae8f292746e406560ccf43a19497bea7997ba8863b5df4391264642'
+const JWT_SECRET = '12345'
+// const JWT_SECRET = '9e8bd0f73ed187a5f321700b7f15ded9e6ba25f7b099f55303b46b774ffe4f60648a373bbae8f292746e406560ccf43a19497bea7997ba8863b5df4391264642'
 
 
 // app.set('view engine', 'ejs');
@@ -15,7 +16,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // -------------------------I should Add ejs file -----------------------
 function authenticateToken(req, res, next) {
-    const authHeader = req.authorization['authorization'];
+    const authHeader = req.headers['Authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if(token === null){
@@ -44,29 +45,30 @@ app.get('/login', function (req, res) {
 app.post('/login', async (req, res) => {
     try {
         const {username, password} = req.body;
-        console.log(username, password);
-        // res.sendFile("/home/navid/Desktop/Store_Navid/backend/public/product.html");
         const user = await User.findOne({where: {phone_number: username}});
 
-        console.log(user, 'first')
-        console.log(user.password, 'second')
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        // console.log(user, 'first')
+        // console.log(user.password, 'second')
+        // const isPasswordValid = await bcrypt.compare(password, user.password)
+        isPasswordValid = password === user.password;
         if (!user) {
-            return res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
+            return res.status(401).json({message:'user not found'})
+            // return res.status(401).sendFile('/home/navid/Desktop/Store_Navid/backend/public/login.html');
         }
 
         if (isPasswordValid) {
-            res.status(200).sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html');
+            const token = jwt.sign({id: user.id, username: user.phone_number}, JWT_SECRET, {expiresIn: '1h'});
+            return res.status(200).json({token,message:"Login successful"});
         } else {
             res.status(401).json({message: 'Your password is incorrect please try again'});
         }
-        const token = jwt.sign({id: user.id, username: user.phoneNumber}, JWT_SECRET, {expiresIn: '1h'});
-        res.status(200).json({token});
+        console.log("token:",token)
     } catch (error) {
         console.error(`${error} occurred`);
-        res.status(500).send('An error occurred trying to log in');
+        res.status(500).json({message:'An error occurred trying to log in'});
     }
 });
+
 app.get('/register', function (req, res) {
     const filePath = path.join(__dirname, '../public/register.html');
     console.log(filePath);
@@ -81,7 +83,7 @@ app.get('/register', function (req, res) {
 app.post('/register', async (req, res) => {
     try {
         const {name, familyName, address, phoneNumber, email, Password} = req.body;
-        console.log(name, familyName, address, phoneNumber, email, Password);
+        // console.log(name, familyName, address, phoneNumber, email, Password);
         const existingUser = await User.findOne({where: {phone_number: phoneNumber}});
         if (existingUser) {
             return res.status(400).send('User already exists');
@@ -108,6 +110,10 @@ app.post('/register', async (req, res) => {
 app.get('/', function (req, res, next) {
     res.sendFile('/home/navid/Desktop/Store_Navid/backend/public/index.html');
 });
+
+app.get('/contact',authenticateToken,function(req,res,next){
+    res.sendFile('/home/navid/Desktop/Store_Navid/backend/public/contact.html')
+});
 // // Use the router for the root path
 app.use('/', router);
 
@@ -115,6 +121,7 @@ app.use('/', router);
 app.listen(3000, () => {
     console.log(`Server is running on port 3000`);
 });
+
 
 module.exports = router;
 
