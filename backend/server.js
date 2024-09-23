@@ -1,14 +1,10 @@
-// I need to check this file 
-// const app = require('../app'); // Import the Express app
-const http = require('http');
-const port = process.env.PORT || 3000;
 const express = require('express');
 const app = express();
-
-const server = http.createServer(app);
-
+const PORT = 3000;
 require('dotenv').config();
 app.use(express.json());
+console.log(process.env.OUTLOOK_USER)
+console.log(process.env.OUTLOOK_PASS)
 let generateOTP;
 (async()=>{
     const {customAlphabet}=await import('nanoid')
@@ -35,7 +31,3 @@ app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`)
 })
 
-
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
