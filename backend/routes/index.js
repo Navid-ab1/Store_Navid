@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = '12345'
 // const JWT_SECRET = '9e8bd0f73ed187a5f321700b7f15ded9e6ba25f7b099f55303b46b774ffe4f60648a373bbae8f292746e406560ccf43a19497bea7997ba8863b5df4391264642'
 
-
+const forgetPasswordController= require('../controllers/forgetPassword');
 // app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -69,6 +69,16 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.post('/forgetPassword/send-otp',forgetPasswordController.sendEmail)
+
+app.post('/forgetPassword/phone-otp',function(req,res){
+
+})
+app.post('/forgetPassword/verify-otp',function(req,res){
+
+})
+
+
 app.get('/register', function (req, res) {
     const filePath = path.join(__dirname, '../public/register.html');
     console.log(filePath);
@@ -99,6 +109,7 @@ app.post('/register', async (req, res) => {
         });
         res.redirect("product.html");
 
+app.post('/')        
 // I think the problems return to the Create ad and updated at in user table
 
     } catch (error) {

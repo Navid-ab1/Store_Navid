@@ -16,13 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
             userIcon.textContent = 'Login';         
             logoutButton.style.display = 'none';    
             loginForm.style.display = 'block'; 
-            Dashboard.style.display = 'none'
-
-
+            Dashboard.style.display = 'none';
         }
     }
 
-    // Initial UI setup based on token presence
     updateUI(!!token);
 
     // Handle login form submission
