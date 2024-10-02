@@ -5,55 +5,78 @@ document.addEventListener('DOMContentLoaded',function(){
     const emailSubmit=document.getElementById('emailSubmit');
     const errorMessage = document.getElementById('errorMessage')
     
-    resetPassword.addEventListener('emailSubmit',function(event){
+    resetPassword.addEventListener('submit',function(event){
         event.preventDefault();
-        const Email_Forget  = document.getElementById('email');
-        if(!Email_Forget){
+        const email  = document.getElementById('email').value;
+        if(!email){
             errorMessage.textContent = 'You should enter your Email';
+            return;
         }
         fetch('/forgetPassword/send-otp',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({Email_Forget})
+            body:JSON.stringify({email}),
         })
-        .then(response => response.json)
+        .then(response => response.json())
+        .then(data =>
+            console.log('success: ',data)
+        )
         .catch(error =>{
-            console.error('Error has happened.')
+            console.error('Error has happened:', error);
+            errorMessage.textContent = 'An error occurred while sending the OTP';
         })
     });
-
-    resetPassword.addEventListener('Getcode',function(event){
+    const getCodeButton = document.getElementById('Getcode');
+    getCodeButton.addEventListener('click',function(event){
         event.preventDefault();
-        const phoneInputs = document.querySelectorAll('.phoneNumber input')
+        const phoneInputs = Array.from(document.querySelectorAll('.phoneNumber input'))
+        if (!phoneInputs || phoneInputs.length < 10) {
+            errorMessage.textContent = 'You should enter a valid Phone Number';
+            return;
+        }
         fetch('/forgetPassword/phone-otp',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({phoneInputs})
+            body:JSON.stringify({phoneNumber:phoneInputs})
         })
-        .then(response => response.json)
-        .catch(error =>{
-            console.error('Error has happened.')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Handle response after sending phone OTP
         })
+        .catch(error => {
+            console.error('Error has happened:', error);
+            errorMessage.textContent = 'An error occurred while sending the phone OTP';
+        });
     });
-
-    resetPassword.addEventListener('sumbit',function(event){
+    const submitButton = document.getElementById('submit');
+    resetPassword.addEventListener('submit',function(event){
         event.preventDefault();
-        const otp = document.querySelectorAll('.code-inputs input')
+        const otp = Array.from(document.querySelectorAll('.code-inputs input')).map(input => input.value).join('');
+        if (!otp || otp.length < 6) {
+            errorMessage.textContent = 'You should enter the correct OTP';
+            return;
+        }
         fetch('/forgetPassword/verify-otp',{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({otp})
+            body:JSON.stringify({otp}),
         })
-        .then(response => response.json)
-        .catch(error =>{
-            console.error('Error has happened.')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            // Handle OTP verification success (maybe redirect or show a message)
         })
+        .catch(error => {
+            console.error('Error has happened:', error);
+            errorMessage.textContent = 'An error occurred while verifying the OTP';
+        });
     });
 
 })
