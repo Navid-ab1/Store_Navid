@@ -21,6 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
+    "nanoid": "^5.0.7",
+    "nodejs-nodemailer-outlook": "^1.2.4",
     "process": "^0.11.10",
     "sequelize": "^6.37.3"
   }

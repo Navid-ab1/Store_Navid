@@ -58,7 +58,7 @@ const User = sequelize.define('User', {
 });
 
 
-sequelize.sync({alter: true})
+sequelize.sync()
     .then(() => {
         console.log('Tables have been synced successfully.');
     })
