@@ -1,6 +1,31 @@
 const User = require("../models/user");
 const nodeoutlook = require('nodejs-nodemailer-outlook');
+const Redis = require("ioredis");
+const userRedis = new Redis({
+    host:'127.0.0.1',
+    port:6379,
+});
 
+exports.otp_checker = async(req,res,otp)=>{
+    try{
+        const {otp,email} = req.body;
+        if (!otp || !email) {
+            return res.status(400).json({ message: 'OTP and email are required.' });
+        }
+        const value = await userRedis.get(`${email}`);
+        if (otp === value){
+            // change the user password
+            res.status(200).json({ message: 'OTP is correct, password changed.' });
+        }
+        else{
+            console.error('The entered OTP is not corrected.')
+            return res.status(401).json({message:'The entered OTP is not corrected.'})
+        }
+    }catch(error){
+        console.error('Error in OTP checker:', error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+};
 exports.sendEmail = async (req, res) => {
     try {
         // Dynamically import nanoid
@@ -19,6 +44,7 @@ exports.sendEmail = async (req, res) => {
         if (!email_query) {
             return res.status(401).json({ message: 'User not found' });
         }
+        userRedis.set(`${emailAddress}`,`${OTP}`)
 
         console.log('Sending email to:', emailAddress);
 
