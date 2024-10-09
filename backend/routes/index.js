@@ -8,7 +8,8 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = '12345'
 // const JWT_SECRET = '9e8bd0f73ed187a5f321700b7f15ded9e6ba25f7b099f55303b46b774ffe4f60648a373bbae8f292746e406560ccf43a19497bea7997ba8863b5df4391264642'
 
-const forgetPasswordController= require('../controllers/forgetPassword');
+const sendOTPEmail= require('../controllers/sendOTPEmail');
+const checkOTPAuth= require('../controllers/checkOTPAuth');
 // app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -69,7 +70,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/forgetPassword/send-otp',forgetPasswordController.sendEmail)
+app.post('/forgetPassword/send-otp',sendOTPEmail.sendEmail)
+app.post('/forgetPassword/verify-otp',checkOTPAuth.otp_checker)
+
 
 app.post('/forgetPassword/phone-otp',function(req,res){
 

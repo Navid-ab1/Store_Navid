@@ -4,14 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButton = document.getElementById('submit');
     const errorMessage = document.getElementById('errorMessage');
 
+    let userEmail = ''; // Variable to store the user's email
+
     // Email submission event listener
     emailSubmit.addEventListener('click', function(event) {
         event.preventDefault();
-        const email = document.getElementById('email').value;
+        const email = document.getElementById('email').value.trim();
         if (!email) {
             errorMessage.textContent = 'You should enter your Email';
             return;
         }
+
+        // Store the email for later use in OTP verification
+        userEmail = email;
+
         fetch('/forgetPassword/send-otp', {
             method: 'POST',
             headers: {
@@ -21,8 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
-            // Handle success (e.g., display a message or proceed to next step)
+            if (response.ok) {
+                console.log('OTP sent successfully:', data);
+                // Display a success message or prompt the user to enter the OTP
+                errorMessage.textContent = 'OTP has been sent to your email.';
+            } else {
+                console.error('Error:', data);
+                errorMessage.textContent = data.message || 'An error occurred while sending the OTP';
+            }
         })
         .catch(error => {
             console.error('Error has happened:', error);
@@ -30,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Phone number submission event listener
+    // Phone number submission event listener (if applicable)
     getCodeButton.addEventListener('click', function(event) {
         event.preventDefault();
         const phoneInputs = Array.from(document.querySelectorAll('.phoneNumber input'));
@@ -39,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessage.textContent = 'You should enter a valid Phone Number';
             return;
         }
+
+        // Store the phone number for later use if needed
+        // ...
+
         fetch('/forgetPassword/phone-otp', {
             method: 'POST',
             headers: {
@@ -48,8 +64,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Success:', data);
-            // Handle response after sending phone OTP
+            if (response.ok) {
+                console.log('OTP sent successfully to phone:', data);
+                errorMessage.textContent = 'OTP has been sent to your phone.';
+            } else {
+                console.error('Error:', data);
+                errorMessage.textContent = data.message || 'An error occurred while sending the phone OTP';
+            }
         })
         .catch(error => {
             console.error('Error has happened:', error);
@@ -61,22 +82,33 @@ document.addEventListener('DOMContentLoaded', function() {
     submitButton.addEventListener('click', function(event) {
         event.preventDefault();
         const otpInputs = Array.from(document.querySelectorAll('.code-inputs input'));
-        const otp = otpInputs.map(input => input.value).join('');
+        const otp = otpInputs.map(input => input.value.trim()).join('');
         if (!otp || otp.length !== 5) {
-            errorMessage.textContent = 'You should enter the correct OTP';
+            errorMessage.textContent = 'You should enter the correct 5-digit OTP';
             return;
         }
+        if (!userEmail) {
+            errorMessage.textContent = 'Email is missing. Please request a new OTP.';
+            return;
+        }
+
         fetch('/forgetPassword/verify-otp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ otp }),
+            body: JSON.stringify({ email: userEmail, otp }),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            // Handle OTP verification success (maybe redirect or show a message)
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok) {
+                console.log('OTP verification success:', data);
+                
+                window.location.href = '../resetPassword.html';
+            } else {
+                console.error('OTP verification failed:', data);
+                errorMessage.textContent = data.message || 'OTP verification failed.';
+            }
         })
         .catch(error => {
             console.error('Error has happened:', error);

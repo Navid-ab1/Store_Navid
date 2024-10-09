@@ -37,6 +37,7 @@ const User = sequelize.define('User', {
     Email: {
         type: Sequelize.STRING,
         allowNull: true,
+        field:'email',
         validate: {
             isEmail: true
         }
