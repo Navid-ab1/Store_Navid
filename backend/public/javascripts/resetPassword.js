@@ -4,16 +4,20 @@ form.addEventListener('submit',function(event){
     event.preventDefault()
     const pass =  document.getElementById("enterPass").value;
     const repass =  document.getElementById("reEnter").value;
+    const phoneNumber = document.getElementById("phoneNum").value;
     errorMessage.textContent = '';
 
+    if (phoneNumber === null ){
+        errorMessage.textContent = 'Phone Number is not entered. Please try again.'
+    }
     if (pass === repass){
         fetch('/resetPassword/updatePass',{
-            method:'POST',
+            method:'PATCH',
             headers:{
                 'Content-Type':'application/json'
 
             },
-            body:JSON.stringify({pass}),
+            body:JSON.stringify({phoneNumber,pass}),
         })
         .then(response => {
             if (response.ok) {

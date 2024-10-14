@@ -10,6 +10,7 @@ const JWT_SECRET = '12345'
 
 const sendOTPEmail= require('../controllers/sendOTPEmail');
 const checkOTPAuth= require('../controllers/checkOTPAuth');
+const updatePass = require('../controllers/update-pass')
 // app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -73,6 +74,7 @@ app.post('/login', async (req, res) => {
 app.post('/forgetPassword/send-otp',sendOTPEmail.sendEmail)
 app.post('/forgetPassword/verify-otp',checkOTPAuth.otp_checker)
 
+app.patch('/resetPassword/updatePass',updatePass.updatePass)
 
 app.post('/forgetPassword/phone-otp',function(req,res){
 
